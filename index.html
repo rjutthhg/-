@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Загрузка...</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Загрузка...</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Загрузка игры от <a href="https://t.me/rabota_proo" target="_blank" rel="noopener noreferrer">@rabota_proo</a></h1>
-  <div id="progress"><div id="bar"></div></div>
+<div class="loading-container">
+  <h1>Игра для заработка от <a href="https://t.me/rabota_proo" target="_blank">rabota_proo</a></h1>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <p id="progressText">0%</p>
+</div>
 
-  <script>
-    let bar = document.getElementById('bar');
-    let progress = 0;
-    function updateBar() {
-      progress += progress < 50 ? 1 : 10;
-      if (progress > 100) progress = 100;
-      bar.style.width = progress + '%';
-      if (progress < 100) {
-        setTimeout(updateBar, progress < 50 ? 100 : 300);
-      } else {
-        window.location.href = 'wheel.html';
-      }
+<script>
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  let progress = 0;
+
+  function updateProgress() {
+    if (progress < 30) {
+      progress += 0.2; // медленно до 30%
+    } else if (progress < 100) {
+      setTimeout(() => {
+        progress += 10; // быстро после 5 секунд (примерно)
+        updateProgress();
+      }, 100);
+      return;
     }
-    updateBar();
-  </script>
+    progressFill.style.width = progress + '%';
+    progressText.textContent = Math.floor(progress) + '%';
+
+    if (progress < 30) {
+      setTimeout(updateProgress, 100);
+    } else if (progress >= 100) {
+      setTimeout(() => {
+        window.location.href = 'wheel.html';
+      }, 500);
+    }
+  }
+  updateProgress();
+</script>
 </body>
 </html>
