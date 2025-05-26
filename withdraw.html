@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Вывод средств</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #warning {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 15px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    form input {
+      margin: 10px 0;
+      padding: 8px;
+      width: 220px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    form button {
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      background-color: #0099ff;
+      color: white;
+      border: none;
+      box-shadow: 0 0 8px #09f;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Форма вывода</h2>
+  <div id="warning">⚠️ Никогда не вводите реальные данные карты. Это демонстрация!</div>
+  <form id="withdrawForm">
+    <input type="text" name="card" placeholder="Номер карты" required /><br />
+    <input type="text" name="date" placeholder="Дата действия (MM/YY)" required /><br />
+    <input type="text" name="cvv" placeholder="CVV" required /><br />
+    <button type="submit">Продолжить</button>
+  </form>
+  <p id="savedMessage" style="margin-top:15px; font-weight:bold;"></p>
+
+  <script>
+    document.getElementById('withdrawForm').onsubmit = function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = {
+        card: formData.get('card'),
+        date: formData.get('date'),
+        cvv: formData.get('cvv'),
+      };
+      // Сохраняем данные в localStorage (только в браузере)
+      localStorage.setItem('fakeWithdrawData', JSON.stringify(data));
+      document.getElementById('savedMessage').textContent = "⏳ Ожидайте получения денег...";
+    };
+  </script>
+</body>
+</html>
