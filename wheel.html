@@ -1,62 +1,21 @@
-isSpinning = true;
-    spinBtn.disabled = true;
-    resultMsg.textContent = '';
-    attempts--;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Колесо удачи</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-    let spins = Math.floor(Math.random() * 5) + 5; // Кол-во полных вращений
-    let randomSegment = Math.floor(Math.random() * segmentCount);
+<h2>Заработано: <span id="balance">0 ₽</span></h2>
+<button id="withdrawBtn" disabled>Вывести</button>
+<p id="attemptsText">Осталось попыток: 3</p>
+<canvas id="wheel" width="400" height="400"></canvas>
+<br/>
+<button id="spinBtn">Крутить</button>
+<p id="resultMsg"></p>
 
-    let finalAngle = 2 * Math.PI * spins + (segmentCount - randomSegment) * segmentAngle - segmentAngle / 2;
-
-    let duration = 4000; // 4 секунды
-
-    let start = null;
-    let startAngleCopy = currentAngle;
-
-    function animate(timestamp) {
-      if (!start) start = timestamp;
-      let elapsed = timestamp - start;
-      if (elapsed > duration) elapsed = duration;
-
-      let easeOut = 1 - Math.pow(1 - elapsed / duration, 3);
-      currentAngle = startAngleCopy + finalAngle * easeOut;
-      currentAngle %= 2 * Math.PI;
-
-      drawWheel();
-
-      if (elapsed < duration) {
-        requestAnimationFrame(animate);
-      } else {
-        isSpinning = false;
-        spinBtn.disabled = attempts <= 0;
-        attemptsEl.textContent = 'Осталось попыток: ' + attempts;
-        let segmentIndex = randomSegment;
-        let prize = parseInt(segments[segmentIndex].text);
-        if (isNaN(prize)) prize = 0;
-        balance += prize;
-        balanceEl.textContent = 'Заработано: ' + balance + ' ₽';
-        if (prize === 0) {
-          resultMsg.textContent = 'Увы, вы ничего не выиграли.';
-        } else {
-          resultMsg.textContent = 'Поздравляем! Вы выиграли ' + prize + ' ₽!';
-        }
-        if (balance > 0) {
-          withdrawBtn.disabled = false;
-        }
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-
-  spinBtn.onclick = spin;
-
-  withdrawBtn.onclick = () => {
-    window.location.href = 'withdraw.html';
-  }
-
-  drawWheel();
-  attemptsEl.textContent = 'Осталось попыток: ' + attempts;
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
